@@ -15,7 +15,7 @@ word_list = ["отчуждение", "производство", "рациона
 guessed_words_count = 0
 
 
-# функция выбора одного случайное слово из списка
+# функция выбора одного случайного слова из списка
 def get_word():
     word = random.choice(word_list)
     length = len(word_list)
