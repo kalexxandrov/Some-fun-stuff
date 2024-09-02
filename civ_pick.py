@@ -114,7 +114,7 @@ def game_end(): # вывод результатов и их запись в фа
     print('Статистика Кирилла: ', kirill_civs_score)
     print()
 
-    with open('C:/Users/Alekkir/Desktop/Civ_stats/civ_stats.txt', 'a', encoding='utf-8') as file: # запись результатов в файл
+    with open('civ_stats.txt', 'a', encoding='utf-8') as file: # запись результатов в файл
         file.write(f'Дата: {datetime.datetime.now()}\n')
         file.write(f'Общее количество побед Даниила: {list(daniil_civs_score.values()).count(1)}\n')
         file.write(f'Статистика Даниила: {daniil_civs_score}\n')
