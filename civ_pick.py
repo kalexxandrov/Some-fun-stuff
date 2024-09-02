@@ -31,53 +31,54 @@ def reroll(): # реролл цивилизации (за сессию кажд�
     while True:
         print()
         print('Кто рероллит? "К" - Кирилл, "Д" - Даниил')
-        name = input('Введи "К" или "Д": ')
-
-        if name.lower() == 'д':
-            if daniil_reroll_count != 0:
-                daniil_reroll_count -= 1
-                print()
-                print(f'Счётчик оставшихся рероллов Даниила: {daniil_reroll_count}')
+        name = input('Введи "К" или "Д": ').lower()
+        match name:
+            case 'д':
+                if daniil_reroll_count != 0:
+                    daniil_reroll_count -= 1
+                    print()
+                    print(f'Счётчик оставшихся рероллов Даниила: {daniil_reroll_count}')
+                    break
+                else:
+                    print()
+                    print(f'У Даниила больше нет рероллов. Он отсосал! Поражение записано!')
+                    daniil_civs_score.update({daniil_civ: 0})
+                    kirill_civs_score.update({kirill_civ: 1})
                 break
-            else:
-                print()
-                print(f'У Даниила больше нет рероллов. Он отсосал! Поражение записано!')
-                daniil_civs_score.update({daniil_civ: 0})
-                kirill_civs_score.update({kirill_civ: 1})
-            break
-        elif name.lower() == 'к':
-            if kirill_reroll_count != 0:
-                kirill_reroll_count -= 1
-                print()
-                print(f'Счётчик оставшихся рероллов Кирилла: {kirill_reroll_count}')
+            case 'к':
+                if kirill_reroll_count != 0:
+                    kirill_reroll_count -= 1
+                    print()
+                    print(f'Счётчик оставшихся рероллов Кирилла: {kirill_reroll_count}')
+                    break
+                else:
+                    print()
+                    print(f'У Кирилла больше нет рероллов. Он отсосал! Поражение записано!')
+                    kirill_civs_score.update({kirill_civ: 0})
+                    daniil_civs_score.update({daniil_civ: 1})
                 break
-            else:
-                print()
-                print(f'У Кирилла больше нет рероллов. Он отсосал! Поражение записано!')
-                kirill_civs_score.update({kirill_civ: 0})
-                daniil_civs_score.update({daniil_civ: 1})
-            break
-        else:
-            print('Введено что-то не то. Попробуй снова!')
-            continue
+            case _:
+                print('Введено что-то не то. Попробуй снова!')
+                continue
 
 
 def stats(): # запись результата партии
     while True:
         print()
         print('Кто выиграл? "К" - Кирилл, "Д" - Даниил')
-        name = input('Введи "К" или "Д": ')
-        if name.lower() == 'д':
-            daniil_civs_score.update({daniil_civ: 1})
-            kirill_civs_score.update({kirill_civ: 0})
-            break
-        elif name.lower() == 'к':
-            daniil_civs_score.update({daniil_civ: 0})
-            kirill_civs_score.update({kirill_civ: 1})
-            break
-        else:
-            print('Введено что-то не то. Попробуй снова!')
-            continue
+        name = input('Введи "К" или "Д": ').lower()
+        match name:
+            case 'д':
+                daniil_civs_score.update({daniil_civ: 1})
+                kirill_civs_score.update({kirill_civ: 0})
+                break
+            case 'к':
+                daniil_civs_score.update({daniil_civ: 0})
+                kirill_civs_score.update({kirill_civ: 1})
+                break
+            case _:
+                print('Введено что-то не то. Попробуй снова!')
+                continue
 
 
 def game_continue(): # проверка, не хочет ли кто ливнуть в тильте
@@ -87,17 +88,18 @@ def game_continue(): # проверка, не хочет ли кто ливну�
         print()
         print('Продолжаем? 1 - да, 0 - нет')
         n = input('Введи число: ')
-        if n == '1':
-            break
-        elif n == '0':
-            print()
-            print('Хорошо поиграли!')
-            flag = False
-            break
-        else:
-            print()
-            print('Введено что-то не то, попробуй снова!')
-            continue
+        match n:
+            case '1':
+                break
+            case '0':
+                print()
+                print('Хорошо поиграли!')
+                flag = False
+                break
+            case _:
+                print()
+                print('Введено что-то не то, попробуй снова!')
+                continue
 
 
 def game_end(): # вывод результатов и их запись в файл
@@ -124,31 +126,33 @@ def game_end(): # вывод результатов и их запись в фа
     print('----------------')
 
 
-def start():
+def start(): # само "тело" программы с вызовом всех нужных функций
     while True:
-        if flag:
+        if flag: # проверка, не ливнул ли кто в тильте
             if civilizations1:
                 pick()
                 print('1 - реролл, 2 - записать результаты, 0 - выйти')
                 n = input('Введи число: ')
-                if n == '1':
-                    reroll()
-                    game_continue()
-                elif n == '2':
-                    stats()
-                    game_continue()
-                elif n == '0':
-                    print()
-                    print('Хорошо поиграли!')
-                    game_end()
-                    break
-                else:
-                    print()
-                    print('Введено что-то не то, попробуй снова!')
-                    continue
+                match n:
+                    case '1':
+                        reroll()
+                        game_continue()
+                    case '2':
+                        stats()
+                        game_continue()
+                    case '0':
+                        print()
+                        print('Хорошо поиграли!')
+                        game_end()
+                        break
+                    case _:
+                        print()
+                        print('Введено что-то не то, попробуй снова!')
+                        continue
             else:
                 print()
                 print('Цивилизации закончились! Видимо, вы удачно поиграли))')
+                game_end()
                 break
         else:
             game_end()
@@ -176,4 +180,4 @@ kirill_civ = None
 daniil_civs_score = {}
 kirill_civs_score = {}
 
-start()
+start() # начинаем сессию :)
