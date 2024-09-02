@@ -2,7 +2,7 @@ import random
 import datetime
 
 
-def pick(): # выбор цивилизацию
+def pick(): # выбор цивилизации
     global daniil_civ
     global kirill_civ
     
