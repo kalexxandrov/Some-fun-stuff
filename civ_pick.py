@@ -90,6 +90,8 @@ def game_continue(): # проверка, не хочет ли кто ливну�
         if n == '1':
             break
         elif n == '0':
+            print()
+            print('Хорошо поиграли!')
             flag = False
             break
         else:
@@ -138,6 +140,7 @@ def start():
                 elif n == '0':
                     print()
                     print('Хорошо поиграли!')
+                    game_end()
                     break
                 else:
                     print()
