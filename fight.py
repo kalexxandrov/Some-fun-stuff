@@ -85,11 +85,11 @@ def create_creatures() -> None:
     while True:
         while True:
             try:
-                print('Выберите тип существ: ')
+                print('\033[1m' + 'Выберите тип существ: ' + '\033[0m')
                 print('1 - Зомби [обычный].')
                 print('2 - Зомби [огромный].')
                 print()
-                species = int(input('Введите число: '))
+                species = int(input('\033[1m' + 'Введите число: ' + '\033[0m'))
                 print()
             except ValueError:
                 print('Вы ввели что-то не то, попробуйте снова!')
@@ -103,7 +103,8 @@ def create_creatures() -> None:
                 break
         while True:
             try:
-                n = int(input('Введите количество существ выбранного типа: '))
+                n = int(input('\033[1m' + 'Введите количество существ '
+                              'выбранного типа: ' + '\033[0m'))
                 print()
             except ValueError:
                 print('Вы ввели что-то не то, попробуйте снова!')
@@ -111,15 +112,16 @@ def create_creatures() -> None:
                 continue
             else:
                 for _ in range(n):
-                    creatures.append(all_species[species])
+                    creatures.append(all_species[species]())
                 break
         while True:
             try:
-                print('Хотите добавить ещё существ для боя?')
+                print('\033[1m' + 'Хотите добавить ещё существ для '
+                      'боя?' + '\033[0m')
                 print('1 - Да.')
                 print('2 - Нет.')
                 print()
-                flag = int(input('Введите число: '))
+                flag = int(input('\033[1m' + 'Введите число: ' + '\033[0m'))
                 print()
             except ValueError:
                 print('Вы ввели что-то не то, попробуйте снова!')
@@ -141,7 +143,7 @@ def mass_initiative_roll() -> None:
 
 def statuses_check() -> bool:
     alive = False
-    print('Живые враги: ')
+    print('\033[1m' + 'Живые враги: ' + '\033[0m')
     for i in range(len(creatures)):
         if creatures[i].current_hit_points > 0:
             alive = True
@@ -161,7 +163,8 @@ def accuracy_check(creature, armor_class: int) -> bool:
 def take_attack(creature):
     while True:
         try:
-            armor_class = int(input('Введите КБ цели атаки: '))
+            armor_class = int(input('\033[1m' + 'Введите КБ '
+                                    'цели атаки: ' + '\033[0m'))
         except ValueError:
             print('Вы ввели что-то не то, попробуйте снова!')
             print()
@@ -179,7 +182,8 @@ def take_attack(creature):
 def attack_the_creature(creature) -> None:
     while True:
         try:
-            damage = int(input('Введите нанесённый урон: '))
+            damage = int(input('\033[1m' + 'Введите нанесённый '
+                               'урон: ' + '\033[0m'))
         except ValueError:
             print('Вы ввели что-то не то, попробуйте снова!')
             print()
@@ -216,7 +220,7 @@ def start_fight():
             break
         print()
         try:
-            pick = int(input('Выбрать существо: '))
+            pick = int(input('\033[1m' + 'Выбрать существо: ' + '\033[0m'))
         except ValueError:
             print('Вы ввели что-то не то, попробуйте заново!')
             continue
@@ -227,13 +231,13 @@ def start_fight():
             continue
         while True:
             try:
-                print('Что сделать?')
+                print('\033[1m' + 'Что сделать?' + '\033[0m')
                 print('1 - атаковать.')
                 print('2 - получить урон.')
                 print('3 - проверка на мудрость.')
                 print('0 - выйти.')
                 print()
-                action = int(input('Введите число: '))
+                action = int(input('\033[1m' + 'Введите число: ' + '\033[0m'))
             except ValueError:
                 print('Вы ввели что-то не то, попробуйте заново!')
                 print()
@@ -254,7 +258,7 @@ def start_fight():
             print('Вы ввели что-то не то, попробуйте снова!')
 
 
-all_species = {1: Zombie(), 2: HugeZombie()}
+all_species = {1: Zombie, 2: HugeZombie}
 creatures = []
 
 create_creatures()
