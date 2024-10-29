@@ -100,8 +100,7 @@ def create_creatures() -> None:
                     print('Вы ввели неверное число. Попробуйте снова!')
                     print()
                     continue
-                else:
-                    break
+                break
         while True:
             try:
                 n = int(input('Введите количество существ выбранного типа: '))
@@ -114,6 +113,24 @@ def create_creatures() -> None:
                 for _ in range(n):
                     creatures.append(all_species[species])
                 break
+        while True:
+            try:
+                print('Хотите добавить ещё существ для боя?')
+                print('1 - Да.')
+                print('2 - Нет.')
+                print()
+                flag = int(input('Введите число: '))
+                print()
+            except ValueError:
+                print('Вы ввели что-то не то, попробуйте снова!')
+                continue
+            else:
+                if flag not in (1, 2):
+                    print('Вы ввели неверное число. Попробуйте снова!')
+                    continue
+                break
+        if flag == 2:
+            break
 
 
 def mass_initiative_roll() -> None:
