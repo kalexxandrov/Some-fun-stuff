@@ -195,7 +195,7 @@ def attack_the_creature(creature) -> None:
               f'осталось {hp_left} хп из {max_hp}.')
 
 
-def is_wisdom(creature) -> bool:
+def is_wise(creature) -> bool:
     wisdom_check = rng.randint(1, 20) > 13
     if wisdom_check:
         print(f'Существо {pick} ({creature.species}) прошло проверку '
@@ -246,7 +246,7 @@ def start_fight():
         elif action == 2:
             take_attack(creatures[pick - 1])
         elif action == 3:
-            is_wisdom(creatures[pick - 1])
+            is_wise(creatures[pick - 1])
         elif action == 0:
             print('Экстренный выход из программы!')
             break
