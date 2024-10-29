@@ -87,7 +87,7 @@ def create_creatures() -> None:
             try:
                 print('Выберите тип существ: ')
                 print('1 - Зомби [обычный].')
-                print('2 - Зомби [огромный]')
+                print('2 - Зомби [огромный].')
                 print()
                 species = int(input('Введите число: '))
                 print()
