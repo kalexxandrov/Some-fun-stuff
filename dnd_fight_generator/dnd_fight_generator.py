@@ -1,21 +1,7 @@
 import random as rng
 
 
-class Zombie:
-    def __init__(self) -> None:
-        self.species = 'Зомби [обычный]'
-        self.base_hit_points = 22
-        self.current_hit_points = 22
-        self.armor_class = 8
-        self.strength = (13, 1)
-        self.dexterity = (6, -2)
-        self.constitution = (16, 3)
-        self.intelligence = (3, -4)
-        self.wisdom = (6, -2)
-        self.charisma = (5, -3)
-        self.accuracy_bonus = 3
-        self.max_damage = 7
-
+class Enemy:
     def initiative_roll(self) -> int:
         self.initiative = rng.randint(1, 20)
         if self.initiative == 1:
@@ -25,6 +11,27 @@ class Zombie:
         else:
             self.initiative += self.dexterity[1]
             return self.initiative
+
+    def take_damage(self, damage: int) -> int:
+        self.current_hit_points -= damage
+        return self.current_hit_points  
+
+
+class Zombie(Enemy):
+    dexterity = (6, -2)
+    intelligence = (3, -4)
+    wisdom = (6, -2)
+    charisma = (5, -3)
+
+    def __init__(self) -> None:
+        self.species = 'Зомби [обычный]'
+        self.base_hit_points = 22
+        self.current_hit_points = 22
+        self.armor_class = 8
+        self.strength = (13, 1)
+        self.constitution = (16, 3)
+        self.accuracy_bonus = 3
+        self.max_damage = 7
 
     def attack(self) -> int:
         return rng.randint(1, 6) + 1
@@ -42,45 +49,18 @@ class Zombie:
         return self.current_hit_points
 
 
-class HugeZombie:
+class HugeZombie(Zombie):
     def __init__(self) -> None:
         self.species = 'Зомби [огромный]'
         self.base_hit_points = 85
         self.current_hit_points = 85
-        self.armor_class = 8
         self.strength = (19, 4)
-        self.dexterity = (6, -2)
         self.constitution = (18, 4)
-        self.intelligence = (3, -4)
-        self.wisdom = (6, -2)
-        self.charisma = (5, -3)
         self.accuracy_bonus = 6
         self.max_damage = 18
 
-    def initiative_roll(self) -> int:
-        self.initiative = rng.randint(1, 20)
-        if self.initiative == 1:
-            return 0
-        elif self.initiative == 20:
-            return 100
-        else:
-            self.initiative += self.dexterity[1]
-            return self.initiative
-
     def attack(self) -> int:
         return sum([rng.randint(1, 8) for _ in range(2)]) + 2
-
-    def undead_resistance(self, damage: int) -> bool:
-        return rng.randint(1, 20) > 5 + damage
-
-    def take_damage(self, damage: int) -> int:
-        self.current_hit_points -= damage
-        if self.current_hit_points <= 0:
-            if self.undead_resistance(damage):
-                self.current_hit_points = 1
-            else:
-                self.current_hit_points = 0
-        return self.current_hit_points
 
 
 def create_creatures() -> None:
@@ -237,6 +217,9 @@ def start_fight():
         print()
         try:
             pick = int(input('\033[1m' + 'Выбрать существо: ' + '\033[0m'))
+            if pick > len(creatures):
+                print('Вы ввели не то число, попробуйте заново!')
+                continue
         except ValueError:
             print('Вы ввели что-то не то, попробуйте заново!')
             continue
