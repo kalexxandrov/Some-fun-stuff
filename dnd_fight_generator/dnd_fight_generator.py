@@ -11,6 +11,11 @@ class Enemy:
         else:
             self.initiative += self.dexterity[1]
             return self.initiative
+        
+    def attack(self) -> int:
+        damage = sum([rng.randint(1, self.dice_value)
+                      for _ in range(self.n_dices)]) + self.attack_bonus
+        return damage
 
     def take_damage(self, damage: int) -> int:
         self.current_hit_points -= damage
@@ -32,9 +37,9 @@ class Zombie(Enemy):
         self.constitution = (16, 3)
         self.accuracy_bonus = 3
         self.max_damage = 7
-
-    def attack(self) -> int:
-        return rng.randint(1, 6) + 1
+        self.n_dices = 1
+        self.dice_value = 6
+        self.attack_bonus = 1
 
     def undead_resistance(self, damage: int) -> bool:
         return rng.randint(1, 20) > 5 + damage
@@ -58,6 +63,9 @@ class HugeZombie(Zombie):
         self.constitution = (18, 4)
         self.accuracy_bonus = 6
         self.max_damage = 18
+        self.n_dices = 2
+        self.dice_value = 8
+        self.attack_bonus = 2
 
     def attack(self) -> int:
         return sum([rng.randint(1, 8) for _ in range(2)]) + 2
