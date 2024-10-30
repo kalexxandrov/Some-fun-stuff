@@ -14,6 +14,7 @@ class Zombie:
         self.wisdom = (6, -2)
         self.charisma = (5, -3)
         self.accuracy_bonus = 3
+        self.max_damage = 7
 
     def initiative_roll(self) -> int:
         self.initiative = rng.randint(1, 20)
@@ -54,6 +55,7 @@ class HugeZombie:
         self.wisdom = (6, -2)
         self.charisma = (5, -3)
         self.accuracy_bonus = 6
+        self.max_damage = 18
 
     def initiative_roll(self) -> int:
         self.initiative = rng.randint(1, 20)
@@ -157,7 +159,15 @@ def status_check(creature) -> bool:
 
 
 def accuracy_check(creature, armor_class: int) -> bool:
-    return rng.randint(1, 20) + creature.accuracy_bonus > armor_class
+    roll = rng.randint(1, 20)
+    if roll == 1:
+        return 1
+    elif roll == 20:
+        return 20
+    elif roll + creature.accuracy_bonus > armor_class:
+        return 'hit'
+    else:
+        return 'miss'
 
 
 def take_attack(creature):
@@ -171,12 +181,18 @@ def take_attack(creature):
             continue
         else:
             break
-    if accuracy_check(creature, armor_class):
-        damage = creatures[pick - 1].attack()
+    accuracy = accuracy_check(creature, armor_class)
+    if accuracy == 1:
+        print('Критический промах!')
+    elif accuracy == 20:
+        print(f'Критический успех! Существо {pick} ({creature.species}) '
+              f'нанесло урон в размере {creature.max_damage}!')
+    elif accuracy == 'hit':
+        damage = creature.attack()
         print(f'Существо {pick} ({creature.species}) '
               f'нанесло урон в размере {damage}.')
     else:
-        print(f'Существо {pick} промахнулось.')
+        print(f'Существо {pick} ({creature.species}) промахнулось.')
 
 
 def attack_the_creature(creature) -> None:
