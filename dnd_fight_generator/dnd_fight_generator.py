@@ -14,7 +14,7 @@ class Enemy:
 
     def take_damage(self, damage: int) -> int:
         self.current_hit_points -= damage
-        return self.current_hit_points  
+        return self.current_hit_points
 
 
 class Zombie(Enemy):
