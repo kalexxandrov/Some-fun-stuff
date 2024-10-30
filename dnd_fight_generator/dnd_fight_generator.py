@@ -11,7 +11,7 @@ class Enemy:
         else:
             self.initiative += self.dexterity[1]
             return self.initiative
-        
+
     def attack(self) -> int:
         damage = sum([rng.randint(1, self.dice_value)
                       for _ in range(self.n_dices)]) + self.attack_bonus
@@ -23,23 +23,21 @@ class Enemy:
 
 
 class Zombie(Enemy):
+    species = 'Зомби [обычный]'
+    base_hit_points = 22
+    current_hit_points = 22
+    armor_class = 8
+    strength = (13, 1)
     dexterity = (6, -2)
+    constitution = (16, 3)
     intelligence = (3, -4)
     wisdom = (6, -2)
     charisma = (5, -3)
-
-    def __init__(self) -> None:
-        self.species = 'Зомби [обычный]'
-        self.base_hit_points = 22
-        self.current_hit_points = 22
-        self.armor_class = 8
-        self.strength = (13, 1)
-        self.constitution = (16, 3)
-        self.accuracy_bonus = 3
-        self.max_damage = 7
-        self.n_dices = 1
-        self.dice_value = 6
-        self.attack_bonus = 1
+    accuracy_bonus = 3
+    n_dices = 1
+    dice_value = 6
+    attack_bonus = 1
+    max_damage = 7
 
     def undead_resistance(self, damage: int) -> bool:
         return rng.randint(1, 20) > 5 + damage
