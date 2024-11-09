@@ -65,8 +65,26 @@ class HugeZombie(Zombie):
         self.dice_value = 8
         self.attack_bonus = 2
 
-    def attack(self) -> int:
-        return sum([rng.randint(1, 8) for _ in range(2)]) + 2
+
+class Bandit(Enemy):
+    species = 'Разбойник [обычный]'
+    base_hit_points = 11
+    current_hit_points = 11
+    armor_class = 8
+    strength = (11, 0)
+    dexterity = (12, 1)
+    constitution = (12, 1)
+    intelligence = (10, 0)
+    wisdom = (10, 0)
+    charisma = (10, 0)
+    accuracy_bonus = 3
+    n_dices = 1
+    attack_bonus = 1
+
+    def attack(self):
+        while True:
+            print('Дальняя атака или ближняя атака?')
+        pass
 
 
 def create_creatures() -> None:
