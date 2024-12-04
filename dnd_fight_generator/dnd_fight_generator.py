@@ -2,15 +2,19 @@ import random as rng
 
 
 class Enemy:
+    'Родительский класс для всех врагов с некоторыми базовыми функциями'
     def initiative_roll(self) -> int:
         self.initiative = rng.randint(1, 20)
         if self.initiative == 1:
-            return 0
+            return 'Критический провал'
         elif self.initiative == 20:
-            return 100
+            return 'Критический успех'
         else:
             self.initiative += self.dexterity[1]
-            return self.initiative
+            if self.initiative <= 0:
+                return 1
+            else:
+                return self.initiative
 
     def attack(self) -> int:
         damage = sum([rng.randint(1, self.dice_value)
@@ -80,11 +84,94 @@ class Bandit(Enemy):
     accuracy_bonus = 3
     n_dices = 1
     attack_bonus = 1
+    max_damage = '7 - если ближняя атака, 8 - если дальняя атака'
 
     def attack(self):
         while True:
-            print('Дальняя атака или ближняя атака?')
-        pass
+            try:
+                print()
+                print('Дальняя атака или ближняя атака?')
+                print('1 - ближняя атака, 2 - дальняя атака.')
+                print()
+                attack_choice = int(input('\033[1m' + 'Введите число: '
+                                          + '\033[0m'))
+                print()
+            except ValueError:
+                print('Вы ввели что-то не то, попробуйте снова!')
+                print()
+                continue
+            else:
+                if attack_choice == 1:
+                    return rng.randint(1, 6) + self.attack_bonus
+                elif attack_choice == 2:
+                    return rng.randint(1, 6) + self.attack_bonus
+                else:
+                    print('Вы ввели неверное число, попробуйте снова!')
+                    print()
+                    continue
+
+
+class Vavila(Enemy):
+    'Вавила - для расчётов кулачного боя'
+    species = 'Вавила [кулачный бой]'
+    base_hit_points = 40
+    current_hit_points = 40
+    armor_class = 5
+    strength = (20, 5)
+    dexterity = (1, -5)
+    constitution = (14, 2)
+    intelligence = (13, 1)
+    wisdom = (15, 2)
+    charisma = (11, 0)
+    accuracy_bonus = 5
+    n_dices = 1
+    dice_value = 1
+    attack_bonus = 5
+    max_damage = 6
+
+
+class Arky(Enemy):
+    'Арки фон Бет - для расчётов кулачного боя'
+    species = 'Арки [кулачный бой]'
+    base_hit_points = 28
+    current_hit_points = 28
+    armor_class = 9
+    strength = (15, 2)
+    dexterity = (9, -1)
+    constitution = (14, 2)
+    intelligence = (13, 1)
+    wisdom = (11, 0)
+    charisma = (16, 3)
+    accuracy_bonus = 2
+    n_dices = 1
+    dice_value = 1
+    attack_bonus = 2
+    max_damage = 6
+
+
+class Daniel(Enemy):
+    '''Даниэль Ридицкус - для расчётов кулачного боя.
+    Монах, двойная атака.'''
+    species = 'Даниэль [кулачный бой]'
+    base_hit_points = 22
+    current_hit_points = 22
+    armor_class = 12
+    strength = (11, 0)
+    dexterity = (15, 2)
+    constitution = (9, -1)
+    intelligence = (13, 1)
+    wisdom = (14, 2)
+    charisma = (16, 3)
+    accuracy_bonus = 2
+    n_dices = 1
+    dice_value = 3
+    attack_bonus = 2
+    max_damage = 10
+
+    def attack(self) -> int:
+        first_attack = super().attack()
+        second_attack = super().attack()
+        return first_attack + second_attack
 
 
 def create_creatures() -> None:
@@ -94,6 +181,10 @@ def create_creatures() -> None:
                 print('\033[1m' + 'Выберите тип существ: ' + '\033[0m')
                 print('1 - Зомби [обычный].')
                 print('2 - Зомби [огромный].')
+                print('3 - Разбойник [обычный].')
+                print('4 - Вавила [кулачный бой].')
+                print('5 - Арки [кулачный бой].')
+                print('6 - Даниэль [кулачный бой].')
                 print()
                 species = int(input('\033[1m' + 'Введите число: ' + '\033[0m'))
                 print()
@@ -174,7 +265,7 @@ def accuracy_check(creature, armor_class: int) -> bool:
         return 'miss'
 
 
-def take_attack(creature):
+def take_attack_from_creature(creature) -> None:
     while True:
         try:
             armor_class = int(input('\033[1m' + 'Введите КБ '
@@ -220,6 +311,7 @@ def attack_the_creature(creature) -> None:
 
 
 def is_wise(creature) -> bool:
+    'Проверка мудрости для атакой "ноликом" жреца'
     wisdom_check = rng.randint(1, 20) > 13
     if wisdom_check:
         print(f'Существо {pick} ({creature.species}) прошло проверку '
@@ -231,7 +323,8 @@ def is_wise(creature) -> bool:
         attack_the_creature(creatures[pick - 1])
 
 
-def start_fight():
+def start_fight() -> None:
+    'Функция-"тело" боя'
     while True:
         global pick
         print()
@@ -255,9 +348,9 @@ def start_fight():
         while True:
             try:
                 print('\033[1m' + 'Что сделать?' + '\033[0m')
-                print('1 - атаковать.')
-                print('2 - получить урон.')
-                print('3 - проверка на мудрость.')
+                print('1 - атаковать существо.')
+                print('2 - получить урон от существа.')
+                print('3 - проверка на мудрость (атаковать "ноликом").')
                 print('0 - выйти.')
                 print()
                 action = int(input('\033[1m' + 'Введите число: ' + '\033[0m'))
@@ -271,7 +364,7 @@ def start_fight():
         if action == 1:
             attack_the_creature(creatures[pick - 1])
         elif action == 2:
-            take_attack(creatures[pick - 1])
+            take_attack_from_creature(creatures[pick - 1])
         elif action == 3:
             is_wise(creatures[pick - 1])
         elif action == 0:
@@ -281,7 +374,8 @@ def start_fight():
             print('Вы ввели что-то не то, попробуйте снова!')
 
 
-all_species = {1: Zombie, 2: HugeZombie}
+all_species = {1: Zombie, 2: HugeZombie, 3: Bandit,
+               4: Vavila, 5: Arky, 6: Daniel}
 creatures = []
 
 create_creatures()
