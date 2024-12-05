@@ -57,6 +57,7 @@ class Zombie(Enemy):
 
 
 class HugeZombie(Zombie):
+    'Франкенштейн. Большой, страшный и сильный'
     def __init__(self) -> None:
         self.species = 'Зомби [огромный]'
         self.base_hit_points = 85
@@ -109,10 +110,6 @@ class Bandit(Enemy):
                     print('Вы ввели неверное число, попробуйте снова!')
                     print()
                     continue
-
-
-class BanditCaptain(Enemy):
-    pass
 
 
 class Vavila(Enemy):
