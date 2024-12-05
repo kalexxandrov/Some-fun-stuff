@@ -111,6 +111,10 @@ class Bandit(Enemy):
                     continue
 
 
+class BanditCaptain(Enemy):
+    pass
+
+
 class Vavila(Enemy):
     'Вавила - для расчётов кулачного боя'
     species = 'Вавила [кулачный бой]'
