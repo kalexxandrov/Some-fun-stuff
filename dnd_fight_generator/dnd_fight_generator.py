@@ -3,7 +3,7 @@ import random as rng
 
 class Enemy:
     'Родительский класс для всех врагов с некоторыми базовыми функциями'
-    def initiative_roll(self) -> int:
+    def initiative_roll(self) -> str | int:
         self.initiative = rng.randint(1, 20)
         if self.initiative == 1:
             return 'Критический провал'
