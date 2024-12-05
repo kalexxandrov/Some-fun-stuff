@@ -375,8 +375,13 @@ def start_fight() -> None:
             print('Вы ввели что-то не то, попробуйте снова!')
 
 
-all_species = {1: Zombie, 2: HugeZombie, 3: Bandit,
-               4: Vavila, 5: Arky, 6: Daniel}
+all_species = {1: Zombie,
+               2: HugeZombie,
+               3: Bandit,
+               4: Vavila,
+               5: Arky,
+               6: Daniel}
+
 creatures = []
 
 create_creatures()
